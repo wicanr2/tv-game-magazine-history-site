@@ -22,7 +22,7 @@
 
   /* ── 212 期的分布 ───────────────────────────────────────── */
   FIGS['issue-field'] = function (s) {
-    var INK=cv('--ink'), MUT=cv('--ink-3'), GRID=cv('--rule-2'), PAPER=cv('--paper');
+    var INK=cv('--amber'), SEC=cv('--text'), MUT=cv('--muted'), GRID=cv('--line'), PAPER=cv('--ground');
     var HELD=[1], CITED={8:'11/5',9:'11/20',28:'9/1',31:'10/17',212:'4/25'};
     var COLS=20, X0=26, Y0=44, DX=18, DY=20;
     for (var n=1; n<=212; n++) {
@@ -32,7 +32,7 @@
         var sq=el(s,'rect',{x:x-4,y:y-4,width:8,height:8,fill:INK,class:cls('pop'),style:dly(0.2)});
         tip(sq,'第 '+n+' 期 — 館藏（1987-07-20《電視遊樂快訊》創刊號）');
       } else if (CITED[n]) {
-        var ci=el(s,'circle',{cx:x,cy:y,r:4,fill:'none',stroke:INK,'stroke-width':1.3,
+        var ci=el(s,'circle',{cx:x,cy:y,r:4,fill:'none',stroke:SEC,'stroke-width':1.3,
           class:cls('pop'),style:dly(0.3+d)});
         tip(ci,'第 '+n+' 期 — 出刊日由別的刊物引述得知（'+CITED[n]+'）');
       } else {
@@ -46,9 +46,9 @@
       var x=X0+c*DX, y=Y0+r*DY;
       // 館藏（首行）標上方，No.212（末行）標下方；底注再往下讓開
       var up = k===0, ly = up ? y-14 : y+17;
-      el(s,'line',{x1:x,y1:up?y-7:y+7,x2:x,y2:up?ly+4:ly-9,stroke:INK,'stroke-width':0.7,
+      el(s,'line',{x1:x,y1:up?y-7:y+7,x2:x,y2:up?ly+4:ly-9,stroke:up?INK:SEC,'stroke-width':0.7,
         class:cls('fade'),style:dly(1.0)});
-      txt(s,{x:x,y:ly,'font-size':8.5,'font-weight':700,fill:INK,'text-anchor':'middle',
+      txt(s,{x:x,y:ly,'font-size':8.5,'font-weight':600,fill:up?INK:SEC,'text-anchor':'middle',
         style:'paint-order:stroke;stroke:'+PAPER+';stroke-width:3px;'+dly(1.05),
         class:cls('fade')}, p[1]);
     });
@@ -59,7 +59,7 @@
 
   /* ── 館藏 23 冊在時間軸上的分布 ─────────────────────────── */
   FIGS['holdings'] = function (s) {
-    var INK=cv('--ink'), MUT=cv('--ink-3'), SEC=cv('--ink-2'), GRID=cv('--rule'), G2=cv('--rule-2'), PAPER=cv('--paper');
+    var INK=cv('--amber'), SEC=cv('--text'), MUT=cv('--muted'), GRID=cv('--line'), G2=cv('--line'), PAPER=cv('--ground');
     var X0=42, X1=384, Y0=1987, Y1=1996.99;
     function X(t){ return X0+(t-Y0)/(Y1-Y0)*(X1-X0); }
     // 年格線
@@ -72,7 +72,7 @@
     // 本刊 7 冊
     var HON=[[1987,7,'試刊'],[1987,7.5,'創刊'],[1987,11,'情報'],[1988,8.8,'報導000'],
              [1988,9.3,'002'],[1988,10.3,'004'],[1989,10.2,'027']];
-    txt(s,{x:X0-6,y:62,'font-size':8,'font-weight':700,fill:SEC,'text-anchor':'end',
+    txt(s,{x:X0-6,y:62,'font-size':8,'font-weight':500,fill:SEC,'text-anchor':'end',
       class:cls('fade'),style:dly(0.2)},'本刊');
     HON.forEach(function(b,i){
       var x=X(yf(b[0],b[1]));
@@ -83,18 +83,18 @@
     var TOK=[[1991,7,'MD 特輯 4'],[1992,12,'秘技 1'],[1992,12,'秘技 2'],[1992,12,'秘技 3'],
              [1993,7,'MD 特輯 6'],[1994,10,'RPG 特輯 2'],[1995,10,'A’can 特輯'],
              [1996,3,'SLG 特輯 2'],[1996,3,'RPG 特輯 3']];
-    txt(s,{x:X0-6,y:106,'font-size':8,'font-weight':700,fill:SEC,'text-anchor':'end',
+    txt(s,{x:X0-6,y:106,'font-size':8,'font-weight':500,fill:SEC,'text-anchor':'end',
       class:cls('fade'),style:dly(0.2)},'特輯');
     var seen={};
     TOK.forEach(function(b,i){
       var key=b[0]+'-'+b[1]; seen[key]=(seen[key]||0)+1;
       var x=X(yf(b[0],b[1])), yy=102+(seen[key]-1)*10;
-      var c=el(s,'circle',{cx:x,cy:yy,r:4.2,fill:'none',stroke:INK,'stroke-width':1.3,
+      var c=el(s,'circle',{cx:x,cy:yy,r:4.2,fill:'none',stroke:SEC,'stroke-width':1.3,
         class:cls('pop'),style:dly(0.4+i*0.05)});
       tip(c,b[2]+'（'+b[0]+'-'+String(b[1]).padStart(2,'0')+'）');
     });
     // 年份待考的 7 冊：畫在推定區間上，不給確切點
-    txt(s,{x:X0-6,y:152,'font-size':8,'font-weight':700,fill:MUT,'text-anchor':'end',
+    txt(s,{x:X0-6,y:152,'font-size':8,'font-weight':500,fill:MUT,'text-anchor':'end',
       class:cls('fade'),style:dly(0.5)},'待考');
     var UNK=[['MD 特輯 1',1989.6,1991.4],['MD 特輯 2',1989.6,1991.6],['MD 特輯 3',1990.0,1992.0],
              ['MD 特輯 5',1991.4,1992.6],['CD-ROM 特輯',1990.5,1993.6],
@@ -119,11 +119,11 @@
         el(s,'line',{x1:mx,y1:yb-5,x2:mx,y2:yb+5,stroke:INK,'stroke-width':1.1,
           class:cls('fade'),style:dly(0.85+i*0.06)});
       });
-      txt(s,{x:x,y:yb+16,'font-size':7.5,'font-weight':700,fill:INK,'text-anchor':'middle',
+      txt(s,{x:x,y:yb+16,'font-size':7.5,'font-weight':500,fill:INK,'text-anchor':'middle',
         style:'paint-order:stroke;stroke:'+PAPER+';stroke-width:3px;'+dly(0.9+i*0.06),
         class:cls('fade')}, p[2]);
     });
-    txt(s,{x:X0-6,y:yb+4,'font-size':8,'font-weight':700,fill:SEC,'text-anchor':'end',
+    txt(s,{x:X0-6,y:yb+4,'font-size':8,'font-weight':500,fill:SEC,'text-anchor':'end',
       class:cls('fade'),style:dly(0.8)},'刊期');
     txt(s,{x:200,y:274,'font-size':7.5,'font-weight':600,fill:MUT,'text-anchor':'middle',
       'letter-spacing':'.12em',class:cls('fade'),style:dly(1.1)},
@@ -132,7 +132,7 @@
 
   /* ── 版權頁人員的在職跨度 ───────────────────────────────── */
   FIGS['tenure'] = function (s) {
-    var INK=cv('--ink'), MUT=cv('--ink-3'), SEC=cv('--ink-2'), GRID=cv('--rule'), G2=cv('--rule-2');
+    var INK=cv('--amber'), SEC=cv('--text'), MUT=cv('--muted'), GRID=cv('--line'), G2=cv('--line');
     var X0=110, X1=296, Y0=1987, Y1=1996.99, NX=306;
     function X(t){ return X0+(t-Y0)/(Y1-Y0)*(X1-X0); }
     for (var y=1987; y<=1996; y++) {
@@ -169,7 +169,7 @@
         var d=el(s,'circle',{cx:x,cy:yy,r:3.4,fill:INK,class:cls('pop'),style:dly(0.35+i*0.06+k*0.03)});
         tip(d, p[0]+'　'+e[0]+'-'+String(e[1]|0).padStart(2,'0')+'　'+e[2]);
       });
-      txt(s,{x:X0-8,y:yy+3,'font-size':8.5,'font-weight':700,fill:INK,'text-anchor':'end',
+      txt(s,{x:X0-8,y:yy+3,'font-size':8.5,'font-weight':500,fill:INK,'text-anchor':'end',
         class:cls('fade'),style:dly(0.3+i*0.06)}, p[0]);
       txt(s,{x:NX,y:yy+3,'font-size':7,'font-weight':600,fill:MUT,
         class:cls('fade'),style:dly(0.5+i*0.06)}, p[1]);
@@ -181,7 +181,7 @@
 
   /* ── 一冊要處理的平台數 ─────────────────────────────────── */
   FIGS['platforms'] = function (s) {
-    var INK=cv('--ink'), MUT=cv('--ink-3'), SEC=cv('--ink-2'), GRID=cv('--rule'), G2=cv('--rule-2'), PAPER=cv('--paper');
+    var INK=cv('--amber'), SEC=cv('--text'), MUT=cv('--muted'), GRID=cv('--line'), G2=cv('--line'), PAPER=cv('--ground');
     var COL=[
       ['1987','快訊創刊號',['FC']],
       ['1988','報導創刊號',['FC','PC Engine','SEGA','大型機台']],
@@ -192,7 +192,7 @@
     var X0=72, DX=92, Y0=52, DY=17;
     COL.forEach(function(c,i){
       var x=X0+i*DX;
-      txt(s,{x:x,y:30,'font-size':11,'font-weight':800,fill:INK,'text-anchor':'middle',
+      txt(s,{x:x,y:30,'font-size':11,'font-weight':600,fill:INK,'text-anchor':'middle',
         class:cls('fade'),style:dly(0.1+i*0.08)}, c[0]);
       txt(s,{x:x,y:42,'font-size':7.5,'font-weight':600,fill:MUT,'text-anchor':'middle',
         class:cls('fade'),style:dly(0.12+i*0.08)}, c[1]);
@@ -207,7 +207,7 @@
       });
       // 該冊的平台數
       var yn=Y0+c[2].length*DY+8;
-      txt(s,{x:x,y:yn+6,'font-size':15,'font-weight':800,fill:INK,'text-anchor':'middle',
+      txt(s,{x:x,y:yn+6,'font-size':15,'font-weight':600,fill:INK,'text-anchor':'middle',
         style:'paint-order:stroke;stroke:'+PAPER+';stroke-width:3px;'+dly(0.5+i*0.08),
         class:cls('fade')}, String(c[2].length));
       txt(s,{x:x,y:yn+17,'font-size':7,'font-weight':600,fill:MUT,'text-anchor':'middle',
