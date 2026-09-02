@@ -1,21 +1,23 @@
-/* 語意色：一個顏色一個意思，全站固定。關鍵路徑色只有一個（赭紅）。 */
+/* 語意色：一個顏色一個意思，全站固定。關鍵路徑色只有一個（赭紅）。
+   灰階取自 lieflat-charts 的 Mono ladder（明度即層級，同色相只變明度）：
+   #1C1C1A · #4A4944 · #6A6963 · #8F8E88 · #B0AFA9 · #C6C5BF · #D8D7D1 */
 :root{
-  --paper:#faf8f4;          /* 紙面 */
-  --ink:#1c1a17;            /* 正文 */
-  --ink-2:#4a453e;          /* 次要文字 */
-  --ink-3:#7b7368;          /* 輔助文字 */
-  --rule:#e2ddd3;           /* 細分隔線 */
-  --rule-2:#c4bcae;         /* 較明顯的線 */
+  --paper:#f0efeb;          /* 紙面 */
+  --ink:#1c1c1a;            /* 正文 */
+  --ink-2:#4a4944;          /* 次要文字 */
+  --ink-3:#8f8e88;          /* 輔助文字、來源行 */
+  --rule:#deddd6;           /* 細分隔線、發絲線 */
+  --rule-2:#c6c5bf;         /* 較明顯的線、刻度 */
   --key:#8c3a2b;            /* 關鍵路徑：連結、當前位置 */
-  --key-soft:#f2e9e4;       /* 關鍵路徑的淡底 */
-  --quote-bg:#f3f0e9;
+  --key-soft:#e6dcd6;       /* 關鍵路徑的淡底 */
+  --quote-bg:#e9e8e2;
   font-size:17px;           /* 字級基準只有一個，其他一律 rem */
 }
 @media (prefers-color-scheme:dark){
   :root{
-    --paper:#171614; --ink:#e6e1d8; --ink-2:#b3ac9f; --ink-3:#87806f;
-    --rule:#302d28; --rule-2:#4a453d; --key:#d98a72; --key-soft:#2a211d;
-    --quote-bg:#1f1d1a;
+    --paper:#1c1c1a; --ink:#f0efeb; --ink-2:#c9c7bd; --ink-3:#8f8e88;
+    --rule:#2e2d29; --rule-2:#4a4944; --key:#d98a72; --key-soft:#2f2622;
+    --quote-bg:#252420;
   }
 }
 *{box-sizing:border-box}
@@ -28,6 +30,8 @@ body{
   -webkit-font-smoothing:antialiased;
 }
 code,pre,.num{font-family:"SFMono-Regular",Menlo,Consolas,"Noto Sans Mono CJK TC",monospace}
+/* 站內數字多（期號、頁碼、年份、定價），一律等寬數字以便逐列對位 */
+main,nav.side{font-variant-numeric:tabular-nums}
 
 /* ── 版面 ───────────────────────────────────────── */
 .wrap{display:flex; align-items:flex-start; gap:3.5rem; max-width:74rem; margin:0 auto; padding:0 2rem}
@@ -115,6 +119,53 @@ main td{
 }
 main th:last-child,main td:last-child{padding-right:0}
 main td.nw,main th.nw{white-space:nowrap}
+
+/* ── 圖版 ───────────────────────────────────────── */
+/* 四件套：結論式標題 + 副標題 + 圖 + 來源行。
+   技術文件站不用卡片建立層級，因此圖版靠上下細線與留白圈出邊界，不用圓角色塊。 */
+figure.fig{
+  margin:2.8rem 0; padding:1.4rem 0 1rem;
+  border-top:1px solid var(--rule-2); border-bottom:1px solid var(--rule);
+}
+figure.fig figcaption{display:block; margin-bottom:1.1rem; line-height:1.7}
+figure.fig .fig-n{
+  display:inline-block; font-size:.72rem; font-weight:600; letter-spacing:.14em;
+  color:var(--ink-3); margin-right:.7rem; vertical-align:.08em;
+}
+figure.fig figcaption strong{font-size:1.02rem; font-weight:660; color:var(--ink)}
+figure.fig .fig-sub{
+  display:block; margin-top:.35rem; font-size:.83rem; color:var(--ink-2); line-height:1.8;
+}
+figure.fig svg{display:block; width:100%; height:auto; overflow:visible}
+figure.fig .fig-src{
+  margin-top:.9rem; font-size:.72rem; font-weight:500; letter-spacing:.06em;
+  color:var(--ink-3); line-height:1.8;
+}
+/* 入場：快進快停，不彈跳 */
+figure.fig .fade{animation:figFade .8s cubic-bezier(.25,1,.5,1) both}
+figure.fig .pop{transform-box:fill-box; transform-origin:center;
+  animation:figPop .5s cubic-bezier(.2,.7,.3,1) both}
+@keyframes figFade{from{opacity:0}to{opacity:1}}
+@keyframes figPop{from{opacity:0;transform:scale(.2)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){
+  figure.fig .fade,figure.fig .pop{animation:none}
+}
+/* 列印時不靠動畫顯示：動畫若未播完，fill-mode 會把元素停在 opacity 0 */
+@media print{
+  figure.fig .fade,figure.fig .pop{animation:none!important;opacity:1!important;transform:none!important}
+  nav.side{display:none}
+  .wrap{display:block}
+  main{max-width:none}
+}
+
+/* 條目末尾的史料來源行 */
+main p.srcline{
+  margin-top:2.4rem; padding-top:1rem; border-top:1px solid var(--rule);
+  font-size:.82rem; color:var(--ink-2); line-height:1.85;
+}
+main p.srcline strong{
+  font-weight:600; letter-spacing:.1em; color:var(--ink-3);
+}
 
 /* ── 頁尾 ───────────────────────────────────────── */
 footer{
